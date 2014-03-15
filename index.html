@@ -7,8 +7,6 @@
             font-family: 'helvetica neue', helvetica, arial, sans-serif;
             padding: 0;
             margin: 0;
-            background: url("http://media.tumblr.com/tumblr_ljsf7heYrZ1qcak00.gif") no-repeat; 
-            background-size: cover;
         }
         .lights {
             overflow:auto;
@@ -22,7 +20,8 @@
             color:hsla(160, 80%, 55%, 1);
         }
         i {
-            display:inline-block; margin:2.4%;
+            display:inline-block; 
+            margin:2.4%;
             width:40px; height:40px;
             background-color:hsla(0, 80%, 50%, 0);
             border:20px solid hsla(0, 80%, 50%, 0);
@@ -74,7 +73,7 @@
 
     <script type="text/javascript">
         //Main Light ID
-        var mainLightId = 1;
+        var mainLightId = 0;
 
         //Audio stuff
         var contextClass = (window.AudioContext || window.webkitAudioContext);
@@ -170,8 +169,8 @@
                 };
 
                 //flash on frequency
-                var freqDataKey = i*2.;
-                if (frequencyData[freqDataKey] > 160){                    
+                var freqDataKey = i*2;
+                if (frequencyData[freqDataKey] > 190){                    
                     //start animation on element
                     lights[i].style.opacity = "1";
                 } else {
@@ -180,10 +179,10 @@
 
 
                 // Background Setup
-                if (frequencyData[freqDataKey] > 160 && i == mainLightId) {
-                    //document.body.style.backgroundColor = lights[i].style.backgroundColor;
+                if (frequencyData[freqDataKey] > 190 && i == mainLightId) {
+                    document.body.style.backgroundColor = lights[i].style.backgroundColor;
                 }else if (i == 0){
-                    //document.body.style.backgroundColor = "#000";
+                    document.body.style.backgroundColor = "#FFF";
                 }
 
             }            
