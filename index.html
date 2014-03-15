@@ -7,13 +7,13 @@
             font-family: 'helvetica neue', helvetica, arial, sans-serif;
             padding: 0;
             margin: 0;
-            background: #000;
+            background: url("http://media.tumblr.com/tumblr_ljsf7heYrZ1qcak00.gif") no-repeat; 
+            background-size: cover;
         }
         .lights {
             overflow:auto;
             width:96%;
             padding:2%;
-            background-color: #000;
             text-align:center;
         }
         h2 {
@@ -73,6 +73,9 @@
     <audio autoplay></audio>
 
     <script type="text/javascript">
+        //Main Light ID
+        var mainLightId = 1;
+
         //Audio stuff
         var contextClass = (window.AudioContext || window.webkitAudioContext);
 
@@ -102,7 +105,6 @@
 
             // Web Audio API is available.
             var context = new contextClass();
-            console.warn('yes!');
         } else {
 
             // Web Audio API is not available. Ask the user to use a supported browser.
@@ -112,6 +114,7 @@
         // success callback when requesting audio input stream
         function gotStream(stream) {
             audio.src = window.URL.createObjectURL(stream);
+            audio.volume = 1;
             audio.play();
 
             createAnalyser()
@@ -150,27 +153,41 @@
             //constantly getting feedback from data
             analyzer.getByteFrequencyData(frequencyData);
 
-        // Animation stuff--------------------------------
-        var lights = document.getElementsByTagName('i');
-        var totalLights = lights.length;
+            // Animation stuff
+            var lights = document.getElementsByTagName('i');
+            var totalLights = lights.length;
 
-        for (var i=0; i<totalLights; i++) {
-            
-            //set light colours
-            var lightColour = i*10;
-            lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
-            lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
+            for (var i=0; i<totalLights; i++) {
 
-            //flash on frequency
-            var freqDataKey = i*2;
-            if (frequencyData[freqDataKey] > 160){
-                //start animation on element
-                lights[i].style.opacity = "1";
-            } else {
-                lights[i].style.opacity = "0.2";
-            }
-        }
-    };
+                //set light colours
+                var lightColour = i*10;
+                lights[i].style.backgroundColor = 'hsla('+lightColour+',  80%, 50%, 0.8)';
+                lights[i].style.borderColor = 'hsla('+lightColour+',  80%, 50%, 1)';
+
+                // Click Light
+                lights[i].onclick = function(e){
+                    mainLightId = i;
+                };
+
+                //flash on frequency
+                var freqDataKey = i*2.;
+                if (frequencyData[freqDataKey] > 160){                    
+                    //start animation on element
+                    lights[i].style.opacity = "1";
+                } else {
+                    lights[i].style.opacity = "0.15";
+                }
+
+
+                // Background Setup
+                if (frequencyData[freqDataKey] > 160 && i == mainLightId) {
+                    //document.body.style.backgroundColor = lights[i].style.backgroundColor;
+                }else if (i == 0){
+                    //document.body.style.backgroundColor = "#000";
+                }
+
+            }            
+        };
     </script>
 </body>
 </html>
